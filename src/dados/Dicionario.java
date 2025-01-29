@@ -1,9 +1,8 @@
 package dados;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Dicionario {
     private String idiomaCorrente;
@@ -36,15 +35,15 @@ public class Dicionario {
             throw new Exception("Arquivo de idioma não encontrado: " + arquivo);
         }
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String linha;
-        while ((linha = reader.readLine()) != null) {
+        Scanner scanner = new Scanner(is);
+        while (scanner.hasNextLine()) {
+            String linha = scanner.nextLine();
             String[] colunas = linha.split(";");
             if (colunas.length == 2) {
                 palavras.add(colunas);
             }
         }
-        reader.close();
+        scanner.close();
     }
 
     public ArrayList<String> traduzirParaPortugues(String termo) {
@@ -67,6 +66,30 @@ public class Dicionario {
         return resultados;
     }
 
+    public ArrayList<String> localizarPalavraIdioma(String termo) {
+        ArrayList<String> resultados = new ArrayList<>();
+        termo = termo.toLowerCase();
+
+        for (String[] palavra : palavras) {
+            if (palavra[0].toLowerCase().contains(termo)) {
+                resultados.add(palavra[0]);
+            }
+        }
+        return resultados;
+    }
+
+    public ArrayList<String> localizarPalavraPortugues(String termo) {
+        ArrayList<String> resultados = new ArrayList<>();
+        termo = termo.toLowerCase();
+
+        for (String[] palavra : palavras) {
+            if (palavra[1].toLowerCase().contains(termo)) {
+                resultados.add(palavra[1]);
+            }
+        }
+        return resultados;
+    }
+
     public ArrayList<String> getIdiomas() {
         return new ArrayList<>(idiomas);
     }
@@ -79,3 +102,4 @@ public class Dicionario {
         carregarPalavras();
     }
 }
+

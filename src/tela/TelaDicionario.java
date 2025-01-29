@@ -13,6 +13,8 @@ public class TelaDicionario extends JFrame {
     private JComboBox<String> cbIdiomas;
     private JComboBox<String> cbDirecao;
     private JLabel lblBandeira;
+    private JLabel lblMensagem;
+    private JButton btnLocalizar;
 
     public TelaDicionario() {
         try {
@@ -23,7 +25,7 @@ public class TelaDicionario extends JFrame {
         }
 
         setTitle("Sistema de Tradução - TRAIN");
-        setSize(700, 500);
+        setSize(700, 550);
         setLayout(null);
 
         JLabel lblTitulo = new JLabel("Sistema de Tradução de Palavras (TRAIN)");
@@ -62,8 +64,12 @@ public class TelaDicionario extends JFrame {
         btnTraduzir.setBounds(360, 60, 100, 30);
         add(btnTraduzir);
 
+        btnLocalizar = new JButton("Localizar");
+        btnLocalizar.setBounds(480, 60, 100, 30);
+        add(btnLocalizar);
+
         txtResultado = new JTextArea();
-        txtResultado.setBounds(20, 180, 640, 250);
+        txtResultado.setBounds(20, 200, 640, 250);
         txtResultado.setEditable(false);
         txtResultado.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         add(txtResultado);
@@ -72,6 +78,11 @@ public class TelaDicionario extends JFrame {
         lblBandeira.setBounds(600, 20, 80, 50);
         atualizarBandeira("ingles");
         add(lblBandeira);
+
+        lblMensagem = new JLabel("");
+        lblMensagem.setBounds(20, 470, 640, 20);
+        lblMensagem.setForeground(Color.BLUE);
+        add(lblMensagem);
 
         cbIdiomas.addActionListener(e -> {
             try {
@@ -84,6 +95,7 @@ public class TelaDicionario extends JFrame {
         });
 
         btnTraduzir.addActionListener(e -> traduzirPalavra());
+        btnLocalizar.addActionListener(e -> localizarPalavra());
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -108,15 +120,36 @@ public class TelaDicionario extends JFrame {
         exibirResultados(resultados);
     }
 
+    private void localizarPalavra() {
+        String termo = txtPalavra.getText().trim();
+        if (termo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite uma palavra para localizar.");
+            return;
+        }
+
+        List<String> resultados;
+        String direcao = (String) cbDirecao.getSelectedItem();
+
+        if ("De Idioma para Português".equals(direcao)) {
+            resultados = dicionario.localizarPalavraIdioma(termo);
+        } else {
+            resultados = dicionario.localizarPalavraPortugues(termo);
+        }
+
+        exibirResultados(resultados);
+    }
+
     private void exibirResultados(List<String> resultados) {
         txtResultado.setText("");
         if (resultados.isEmpty()) {
             txtResultado.append("Nenhum resultado encontrado.\n");
+            lblMensagem.setText("Nenhum resultado encontrado.");
         } else {
             txtResultado.append("Resultados encontrados (" + resultados.size() + "):\n");
             for (String resultado : resultados) {
                 txtResultado.append("- " + resultado + "\n");
             }
+            lblMensagem.setText("Consulta realizada com sucesso!");
         }
     }
 
