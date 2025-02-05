@@ -67,7 +67,7 @@ Desenvolver na linguagem Java um sistema de tradução de palavras de informáti
     
     - Traduzir a palavra digitada (do idioma corrente para o português ou vice-versa).
     - Localizar a palavra digitada (no idioma corrente ou em português).
-    
+
     d) **JTextArea** para exibir os resultados da tradução/localização da palavra digitada, juntamente com a quantidade de resultados.
 
     e) **JComboBox** para o usuário alterar o idioma corrente.

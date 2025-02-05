@@ -30,6 +30,7 @@ public class Dicionario {
         palavras.clear();
         String arquivo = "/dados/" + idiomaCorrente + ".csv";
 
+        // Localizar e abrir o arquivo de idioma
         InputStream is = getClass().getResourceAsStream(arquivo);
         if (is == null) {
             throw new Exception("Arquivo de idioma não encontrado: " + arquivo);
